@@ -52,7 +52,7 @@ public class UserRepositoryJwtAuthenticationConverter implements Converter<Jwt, 
         private final Map<String, Object> attributes;
         private final Collection<GrantedAuthority> authorities;
 
-        private UserOAuth2AuthenticatedPrincipal(User user, Map<String, Object> attributes, Collection<GrantedAuthority> authorities) {
+        UserOAuth2AuthenticatedPrincipal(User user, Map<String, Object> attributes, Collection<GrantedAuthority> authorities) {
             super(user);
             this.attributes = attributes;
             this.authorities = authorities;

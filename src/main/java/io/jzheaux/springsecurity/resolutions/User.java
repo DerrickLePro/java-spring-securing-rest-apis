@@ -11,6 +11,8 @@ import java.util.UUID;
 public class User implements Serializable {
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     Collection<UserAuthority> userAuthorities = new ArrayList<>();
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    Collection<User> friends = new ArrayList<>();
     @Id
     private UUID id;
     @Column
@@ -21,6 +23,9 @@ public class User implements Serializable {
     private boolean enabled = true;
     @Column(name = "full_name")
     private String fullName;
+    @Column
+    private String subscription;
+
 
     public User() {
         this.id = UUID.randomUUID();
@@ -39,7 +44,10 @@ public class User implements Serializable {
         this.enabled = user.enabled;
         this.userAuthorities = user.userAuthorities;
         this.fullName = user.fullName;
+        this.subscription = user.subscription;
+        this.friends = user.friends;
     }
+
     public UUID getId() {
         return id;
     }
@@ -72,10 +80,6 @@ public class User implements Serializable {
         this.enabled = enabled;
     }
 
-    public Collection<UserAuthority> getUserAuthorities() {
-        return Collections.unmodifiableCollection(this.userAuthorities);
-    }
-
     public String getFullName() {
         return fullName;
     }
@@ -84,8 +88,28 @@ public class User implements Serializable {
         this.fullName = fullName;
     }
 
+    public String getSubscription() {
+        return subscription;
+    }
+
+    public void setSubscription(String subscription) {
+        this.subscription = subscription;
+    }
+
+    public Collection<UserAuthority> getUserAuthorities() {
+        return Collections.unmodifiableCollection(this.userAuthorities);
+    }
+
     public void grantAuthority(String authority) {
         UserAuthority userAuthority = new UserAuthority(this, authority);
         this.userAuthorities.add(userAuthority);
+    }
+
+    public Collection<User> getFriends() {
+        return friends;
+    }
+
+    public void addFriend(User user) {
+        friends.add(user);
     }
 }
